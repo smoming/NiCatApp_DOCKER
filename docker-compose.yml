@@ -1,0 +1,38 @@
+version: '3'
+services:
+  db:
+    container_name: db
+    image: mysql
+    ports:
+      - '3306:3306'
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: chenni0427
+    command: --lower_case_table_names=1
+    networks:
+      - nicat
+  webapi:
+    container_name: webapi
+    build: NiCatApp_DONETCORE/
+    ports:
+      - '5000:80'
+    restart: always
+    networks:
+      - nicat
+    depends_on:
+      - db
+  angular:
+    container_name: angular
+    build: NiCatApp_ANGULAR/
+    ports:
+      - '4200:80'
+    restart: always
+    networks:
+      - nicat
+    depends_on:
+      - db
+      - webapi
+networks:
+ nicat:
+  name: nicat
+  driver: bridge

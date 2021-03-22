@@ -1,0 +1,76 @@
+--安裝docker
+apt-get install docker.io
+--啟動docker
+service docker start
+--添加docker group
+sudo groupadd docker
+--將連接的用戶“$ USER”添加到docker group
+sudo gpasswd -a $USER docker
+--查看docker版本資訊
+docker version
+--下載mysql image
+docker pull mysql
+--列出 container
+docker container ls
+docker ps
+--建立container 名子為db, 密碼為{password}, 忽略大小寫
+docker run --name db -e MYSQL_ROOT_PASSWORD={password} -d --network nicat -p 3306:3306 mysql --lower_case_table_names=1
+--啟動 container
+docker start [container id]
+--停止 container
+docker stop [container id]
+--重新啟動 container
+docker restart [container id]
+--刪除 container
+docker rm [container id]
+--檢視 container 狀態
+docker inspect [container id]
+--檢視 container 硬體使用狀況
+docker stats [container id]
+--進入 container 以bash互動, 再連線登入mysql
+docker exec -it [container id] bash
+mysql -uroot -pchenni0427
+
+--建立 docker network
+docker network create [network name]
+--設定container 連線至network
+docker network connect [network name] [container name]
+--查看network 明細資訊
+docker network inspect [network name]
+
+--docker build Dockerfile
+docker build -f [file name] -t [tag name] .
+
+--連線 mysql container
+docker exec -it [container_name] mysql -u{user} -p{password}
+
+--host copy file to container
+docker cp [host path & file] [container name]:[container path]
+
+
+--安裝 docker-compose
+sudo curl -L "https://github.com/docker/compose/releases/download/1.28.5/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+--權限 docker-compose
+sudo chmod +x /usr/local/bin/docker-compose
+--查看版本 docker-compose
+docker-compose --version
+
+--nginx
+docker run -d -p 5001:80 --name webserver nginx
+
+
+--安裝 ping tool
+apt-get update
+apt-get install iputils-ping
+
+docker network create nicat
+docker pull mysql
+docker run --name db -e MYSQL_ROOT_PASSWORD=chenni0427 -d --network nicat -p 3306:3306 mysql --lower_case_table_names=1
+docker cp /media/sf_vm_share_folder/Dump20210203_v2.sql db:/tmp/
+docker exec -it db mysql -uroot -pchenni0427 --source /tmp/Dump20210203_v2.sql
+docker build -t nicat_webapi .
+docker run --name webapi -d --network nicat -p 5000:80 nicat_webapi
+docker build -t nicat_angular .
+docker run --name angular -d --network nicat -p 4200:80 nicat_angular
+
+
