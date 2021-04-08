@@ -23,7 +23,9 @@ services:
       - db
   angular_java:
     container_name: angular_java
-    build: NiCatApp_ANGULAR/
+    build:
+      context: NiCatApp_ANGULAR/
+      dockerfile: java.Dockerfile
     ports:
       - '4201:80'
     restart: always
