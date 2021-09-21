@@ -54,6 +54,8 @@ sudo curl -L "https://github.com/docker/compose/releases/download/1.28.5/docker-
 sudo chmod +x /usr/local/bin/docker-compose
 --查看版本 docker-compose
 docker-compose --version
+--執行指定yml
+docker-compose -f [file path & name] up -d
 
 --nginx
 docker run -d -p 5001:80 --name webserver nginx
